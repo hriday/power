@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>How Big Is a Gigawatt?</title>
+  <meta name="description" content="A plain-language, interactive guide to electric power: watts to gigawatts, light bulbs to nuclear plants, and how much a data centre really uses compared to Red Deer, Calgary and Toronto." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E⚡%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script>
+    // Set theme before paint to avoid a flash.
+    (function () {
+      var t = null;
+      try { t = localStorage.getItem('theme'); } catch (e) {}
+      if (!t) t = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="#top"><span class="bolt" aria-hidden="true">⚡</span> How Big Is a Gigawatt?</a>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="#ladder">The ladder</a>
+      <a href="#cities">Cities</a>
+      <a href="#lab">Data centre lab</a>
+      <a href="#energy">Power vs energy</a>
+      <a href="#decoder">Headline decoder</a>
+    </nav>
+    <button id="themeToggle" class="theme-toggle" type="button" aria-label="Switch between day and night mode">
+      <span class="tt-track"><span class="tt-thumb"><span class="tt-sun">☀️</span><span class="tt-moon">🌙</span></span></span>
+      <span class="tt-label">Day</span>
+    </button>
+  </header>
+
+  <main id="top">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="scene-wrap">
+        <svg id="scene" class="scene" viewBox="0 0 1200 420" preserveAspectRatio="xMidYMax slice" role="img" aria-label="Illustration of a city skyline with the Calgary Tower, mountains, a wind turbine and power lines. At night the windows light up."></svg>
+      </div>
+      <div class="hero-copy">
+        <p class="eyebrow">An interactive guide for everyone</p>
+        <h1>How much power is <em>that</em>, really?</h1>
+        <p class="lede">Headlines throw around megawatts and gigawatts like everyone knows what they mean. Most of us don't, and that's fine. Here you can build up a feel for it, from a single light bulb to a whole city, and then play with a data centre to see how it really compares.</p>
+        <div class="hero-ctas">
+          <a class="btn primary" href="#ladder">Start with the basics</a>
+          <a class="btn" href="#lab">Jump to the data centre lab</a>
+        </div>
+        <p class="hint">Tip: flip the <strong>Day / Night</strong> switch up top and watch the city light up.</p>
+      </div>
+    </section>
+
+    <!-- QUICK FACTS -->
+    <section class="section" id="basics">
+      <div class="section-head">
+        <p class="eyebrow">Step 1</p>
+        <h2>Every step is 1,000 times bigger</h2>
+        <p class="lede">Power is measured in <strong>watts (W)</strong>, which tell you how fast electricity is being used <em>right now</em>. The bigger units are just watts with a prefix. Every time the prefix goes up, the number is multiplied by a thousand.</p>
+      </div>
+
+      <div class="unit-strip" role="list">
+        <div class="unit" role="listitem"><span class="u-sym">W</span><span class="u-name">watt</span><span class="u-eg">💡 An&nbsp; LED bulb uses about 10 W</span></div>
+        <div class="unit-x" aria-hidden="true">×1,000</div>
+        <div class="unit" role="listitem"><span class="u-sym">kW</span><span class="u-name">kilowatt</span><span class="u-eg">🏠 An&nbsp; average home uses about 1 kW</span></div>
+        <div class="unit-x" aria-hidden="true">×1,000</div>
+        <div class="unit" role="listitem"><span class="u-sym">MW</span><span class="u-name">megawatt</span><span class="u-eg">🏘️&nbsp; About 1,000 homes use about 1 MW</span></div>
+        <div class="unit-x" aria-hidden="true">×1,000</div>
+        <div class="unit" role="listitem"><span class="u-sym">GW</span><span class="u-name">gigawatt</span><span class="u-eg">🏙️&nbsp; Calgary uses about 1 GW</span></div>
+        <div class="unit-x" aria-hidden="true">×1,000</div>
+        <div class="unit" role="listitem"><span class="u-sym">TW</span><span class="u-name">terawatt</span><span class="u-eg">🌍&nbsp; The whole world uses about 3 TW</span></div>
+      </div>
+
+      <div class="card dots-card">
+        <div class="dots-copy">
+          <h3>See a thousand</h3>
+          <p>Below are <strong>1,000 dots</strong>. Pick a unit and see how one dot compares to the whole grid.</p>
+          <div class="seg" role="radiogroup" aria-label="Choose unit step" id="dotSeg">
+            <button role="radio" aria-checked="false" data-step="0">W → kW</button>
+            <button role="radio" aria-checked="false" data-step="1">kW → MW</button>
+            <button role="radio" aria-checked="true" data-step="2">MW → GW</button>
+          </div>
+          <p class="dots-caption" id="dotCaption"></p>
+        </div>
+        <div class="dots" id="dots" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <!-- LADDER -->
+    <section class="section" id="ladder">
+      <div class="section-head">
+        <p class="eyebrow">Step 2</p>
+        <h2>The ladder of power</h2>
+        <p class="lede">These are real things, from a phone charger to the whole planet, ordered by how much power they use or make. The bars use a <em>stretched</em> scale (each tick is 10× more) because otherwise the light bulb would be invisible next to a nuclear plant.</p>
+      </div>
+
+      <div class="legend" id="ladderLegend"></div>
+      <ol class="ladder" id="ladderList"></ol>
+
+      <div class="card compare-card">
+        <h3>Compare any two things</h3>
+        <div class="compare-row">
+          <label>How many
+            <select id="cmpA"></select>
+          </label>
+          <label>does it take to equal one
+            <select id="cmpB"></select>
+          </label>
+        </div>
+        <p class="compare-out" id="cmpOut" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <!-- CITIES -->
+    <section class="section" id="cities">
+      <div class="section-head">
+        <p class="eyebrow">Step 3</p>
+        <h2>Three Canadian cities, and the world's biggest</h2>
+        <p class="lede">A city's power use goes up and down all day and all year, but its <strong>average</strong> is a useful yardstick. Red Deer, Calgary and Toronto give a small, medium and large city. Tokyo shows what a true mega city looks like. All numbers are rounded estimates for electricity only (not gas for heating or fuel for cars).</p>
+      </div>
+      <div class="city-cards" id="cityCards"></div>
+    </section>
+
+    <!-- LAB -->
+    <section class="section lab" id="lab">
+      <div class="section-head">
+        <p class="eyebrow">Step 4 · Play with it</p>
+        <h2>Data centre lab</h2>
+        <p class="lede">A data centre is a big building full of computers. AI data centres are packed with special chips (GPUs) that use a lot of power. Move the sliders and see what it takes.</p>
+      </div>
+
+      <div class="presets" id="presets" role="group" aria-label="Example data centres"></div>
+
+      <div class="lab-grid">
+        <div class="card controls">
+          <div class="control">
+            <div class="control-top">
+              <label for="chipType">What's inside?</label>
+            </div>
+            <div class="seg seg-wrap" role="radiogroup" aria-label="Chip type" id="chipSeg"></div>
+            <p class="help" id="chipHelp"></p>
+          </div>
+
+          <div class="control">
+            <div class="control-top">
+              <label for="chips">How many <span id="chipNoun">chips</span>?</label>
+              <output id="chipsOut"></output>
+            </div>
+            <input type="range" id="chips" min="0" max="1000" step="1" />
+            <div class="ticks"><span>10</span><span>1,000</span><span>100k</span><span>5 million</span></div>
+          </div>
+
+          <div class="control">
+            <div class="control-top">
+              <label for="util">How hard are they working?</label>
+              <output id="utilOut"></output>
+            </div>
+            <input type="range" id="util" min="20" max="100" step="1" />
+            <p class="help">Computers use less power when idle. AI training runs keep chips busy around the clock (80–90%).</p>
+          </div>
+
+          <div class="control">
+            <div class="control-top">
+              <label for="pue">Cooling &amp; building overhead</label>
+              <output id="pueOut"></output>
+            </div>
+            <input type="range" id="pue" min="1.05" max="2" step="0.01" />
+            <p class="help">Chips get hot. Fans, chillers and lights add extra power on top. Engineers call this <strong>PUE</strong>. A value of 1.3 means 30% extra. Modern sites run about 1.1–1.4, and an old server closet might be 2.0.</p>
+          </div>
+
+          <div class="control">
+            <div class="control-top">
+              <label>How is it cooled?</label>
+            </div>
+            <div class="seg seg-wrap" role="radiogroup" aria-label="Cooling type" id="coolSeg"></div>
+            <p class="help" id="coolHelp"></p>
+          </div>
+        </div>
+
+        <div class="card results" aria-live="polite">
+          <p class="r-label">This data centre uses about</p>
+          <p class="r-big" id="rBig">–</p>
+          <p class="r-verdict" id="rVerdict"></p>
+
+          <div class="r-stats">
+            <div class="stat"><span class="stat-ico">🏠</span><span class="stat-num" id="sHomes">–</span><span class="stat-lbl">homes' worth of power</span></div>
+            <div class="stat"><span class="stat-ico">💡</span><span class="stat-num" id="sBulbs">–</span><span class="stat-lbl">LED bulbs left on</span></div>
+            <div class="stat"><span class="stat-ico">🌬️</span><span class="stat-num" id="sTurbines">–</span><span class="stat-lbl">wind turbines (on average)</span></div>
+            <div class="stat"><span class="stat-ico">⚛️</span><span class="stat-num" id="sReactors">–</span><span class="stat-lbl">large nuclear reactors</span></div>
+          </div>
+
+          <div class="reactors" id="reactorRow" aria-hidden="true"></div>
+
+          <div class="r-year">
+            <p><strong>Over a year</strong> that adds up to <span id="sYear">–</span> of electricity, roughly <span id="sCost">–</span> at about 8¢ per kWh.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card water-card">
+        <div class="water-head">
+          <div>
+            <h3>💧 Water: the other side of cooling</h3>
+            <p class="muted">Many data centres cool their chips the way sweat cools you, by letting water evaporate. That water is <strong>consumed</strong>: it goes up as vapour rather than back into the river.</p>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="offsite" />
+            <span class="switch-ui" aria-hidden="true"></span>
+            <span>Include water used at power plants</span>
+          </label>
+        </div>
+        <div class="water-grid">
+          <div class="water-main">
+            <p class="r-label">Water used up each day</p>
+            <p class="w-big" id="wBig">–</p>
+            <p class="w-sub" id="wSub"></p>
+            <div class="w-split" id="wSplit"></div>
+          </div>
+          <div class="r-stats w-stats">
+            <div class="stat"><span class="stat-ico">🏊</span><span class="stat-num" id="wPools">–</span><span class="stat-lbl">Olympic pools a day</span></div>
+            <div class="stat"><span class="stat-ico">🚿</span><span class="stat-num" id="wPeople">–</span><span class="stat-lbl">people's home water use (Canadian average)</span></div>
+            <div class="stat"><span class="stat-ico">🏙️</span><span class="stat-num" id="wCalgary">–</span><span class="stat-lbl">of all the water Calgary uses in a day</span></div>
+            <div class="stat"><span class="stat-ico">📅</span><span class="stat-num" id="wYear">–</span><span class="stat-lbl">litres a year</span></div>
+          </div>
+        </div>
+        <div class="w-bar" aria-hidden="true">
+          <div class="w-bar-track"><div class="w-bar-fill" id="wBarFill"></div></div>
+          <div class="w-bar-labels"><span>Your data centre</span><span>Calgary's whole daily water supply (≈ 600 million L)</span></div>
+        </div>
+        <p class="help" id="wNote"></p>
+      </div>
+
+      <div class="card">
+        <h3>Next to our cities</h3>
+        <p class="muted">Average electricity use, drawn to the same scale.</p>
+        <div class="bars" id="cityBars"></div>
+      </div>
+
+      <div class="card">
+        <div class="day-head">
+          <div>
+            <h3>A winter day on the grid</h3>
+            <p class="muted">A city's use rises and falls through the day. A data centre runs flat out, day and night. Hover or tap the chart.</p>
+          </div>
+          <div class="seg" role="radiogroup" aria-label="Choose city" id="daySeg"></div>
+        </div>
+        <div class="day-chart-wrap">
+          <svg id="dayChart" class="day-chart" viewBox="0 0 760 300" role="img" aria-label="24-hour electricity demand chart for the selected city with the data centre stacked on top"></svg>
+        </div>
+        <div class="day-legend">
+          <span><i class="sw sw-city"></i>City</span>
+          <span><i class="sw sw-dc"></i>Your data centre</span>
+          <span><i class="sw sw-night"></i>Dark outside</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ENERGY -->
+    <section class="section" id="energy">
+      <div class="section-head">
+        <p class="eyebrow">Step 5</p>
+        <h2>Power vs energy: speed vs distance</h2>
+        <p class="lede">This is the #1 source of confusion. <strong>Power</strong> (watts) is like your car's <em>speed</em>. <strong>Energy</strong> (watt-hours) is like the <em>distance</em> you've driven. Your power bill charges you for energy, in <strong>kilowatt-hours (kWh)</strong>.</p>
+      </div>
+
+      <div class="analogy">
+        <div class="card an-card">
+          <div class="an-ico">🚗</div>
+          <p><strong>Speed × time = distance</strong></p>
+          <p class="muted">100 km/h for 2 hours = 200 km</p>
+        </div>
+        <div class="an-eq" aria-hidden="true">is just like</div>
+        <div class="card an-card">
+          <div class="an-ico">⚡</div>
+          <p><strong>Power × time = energy</strong></p>
+          <p class="muted">1 kW for 2 hours = 2 kWh</p>
+        </div>
+      </div>
+
+      <div class="card energy-calc">
+        <h3>Try it with something at home</h3>
+        <div class="ec-grid">
+          <label>Device
+            <select id="ecDevice"></select>
+          </label>
+          <label>Hours a day: <output id="ecHoursOut"></output>
+            <input type="range" id="ecHours" min="0.25" max="24" step="0.25" value="3" />
+          </label>
+          <label>Price per kWh (¢)
+            <input type="number" id="ecPrice" min="1" max="100" step="1" value="18" />
+          </label>
+        </div>
+        <div class="ec-out" id="ecOut" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- DECODER -->
+    <section class="section" id="decoder">
+      <div class="section-head">
+        <p class="eyebrow">Step 6</p>
+        <h2>Headline decoder</h2>
+        <p class="lede">Six questions to ask the next time you read a big number about power or water.</p>
+      </div>
+      <div class="decoder">
+        <article class="card dec">
+          <h3><span class="dec-n">1</span> Is it MW or MWh?</h3>
+          <p>MW is a <em>rate</em> (how fast). MWh is an <em>amount</em> (how much). "Uses 500 MWh" means nothing until you know the time: was that a day? A year? A data centre drawing 100 MW uses 2,400 MWh <em>every day</em>.</p>
+        </article>
+        <article class="card dec">
+          <h3><span class="dec-n">2</span> Is that the maximum, or what really flows?</h3>
+          <p>Power plants are labelled with their <em>maximum</em> output. A 3.5 MW wind turbine averages about 1.2 MW because the wind isn't always blowing. A 100 MW solar farm in Alberta averages under 20 MW because of night and clouds. Nuclear runs close to its maximum almost all the time.</p>
+        </article>
+        <article class="card dec">
+          <h3><span class="dec-n">3</span> "Enough to power X homes": which homes, and when?</h3>
+          <p>Most of these claims assume an average home uses about 1 kW. That's a fair yardstick, but on a cold January evening the same home might draw 5 kW or more. Use it to get a feel for scale, not as an exact number.</p>
+        </article>
+        <article class="card dec">
+          <h3><span class="dec-n">4</span> Proposed, approved or actually running?</h3>
+          <p>Alberta's grid operator has received data centre requests adding up to <em>more</em> than the whole province's peak demand (about 12 GW), but has said only around 1.2 GW can be connected in the near term. A 7.5 GW proposal is a plan, not a building.</p>
+        </article>
+        <article class="card dec">
+          <h3><span class="dec-n">5</span> Tiny × huge = ?</h3>
+          <p>One AI chatbot question uses roughly 0.3 Wh, about like running an LED bulb for two minutes (estimates vary). That's tiny. But a billion questions a day averages out to about <strong>12 MW</strong>, a small town's worth. Both halves of that are true.</p>
+        </article>
+        <article class="card dec">
+          <h3><span class="dec-n">6</span> Water: borrowed or used up? Counted where?</h3>
+          <p><em>Withdrawn</em> water is borrowed and mostly returned. <em>Consumed</em> water evaporates and is gone from the local supply. Also check whether the number includes water used at the <em>power plants</em>, which is often several times bigger than the data centre's own use. That's why one AI question is reported as anywhere from about <strong>5 drops</strong> (Google's 0.26 mL, data centre only) to <strong>a few spoonfuls</strong> (estimates that include power plants).</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- GLOSSARY -->
+    <section class="section" id="glossary">
+      <div class="section-head">
+        <p class="eyebrow">Cheat sheet</p>
+        <h2>Glossary</h2>
+      </div>
+      <dl class="glossary">
+        <div><dt>Watt (W)</dt><dd>The basic unit of power: how fast electricity is being used or made.</dd></div>
+        <div><dt>Kilowatt (kW)</dt><dd>1,000 watts. A kettle uses about 1.5 kW while it's boiling.</dd></div>
+        <div><dt>Megawatt (MW)</dt><dd>1,000 kW, or a million watts. Roughly 1,000 average homes.</dd></div>
+        <div><dt>Gigawatt (GW)</dt><dd>1,000 MW, or a billion watts. About one large nuclear reactor, or all of Calgary.</dd></div>
+        <div><dt>Kilowatt-hour (kWh)</dt><dd>Energy: 1 kW used for 1 hour. This is what your power bill counts.</dd></div>
+        <div><dt>Capacity</dt><dd>The most a power plant can produce. What it actually produces on average is usually less.</dd></div>
+        <div><dt>Capacity factor</dt><dd>Average output ÷ maximum output. Nuclear is about 90%, wind about 35% and solar about 15–20%.</dd></div>
+        <div><dt>Peak demand</dt><dd>The highest power a grid needs at one moment, often on the coldest or hottest evening of the year.</dd></div>
+        <div><dt>PUE</dt><dd>Power Usage Effectiveness: a data centre's total power ÷ the power its computers use. Lower is better, and 1.0 would be perfect.</dd></div>
+        <div><dt>WUE</dt><dd>Water Usage Effectiveness: litres of water a data centre uses up for each kWh its computers use. Evaporative cooling is about 1.5–2 L, and closed-loop cooling is close to 0.</dd></div>
+        <div><dt>Withdrawn vs consumed water</dt><dd>Withdrawn water is taken and mostly returned (often warmer). Consumed water evaporates and is lost to the local supply.</dd></div>
+        <div><dt>GPU</dt><dd>Graphics Processing Unit: the type of chip that runs most modern AI.</dd></div>
+      </dl>
+    </section>
+
+    <section class="section sources">
+      <details>
+        <summary>Where do these numbers come from?</summary>
+        <p>Everything here is rounded so it's easy to remember. Different sources will give somewhat different numbers, so treat them as "about right" rather than exact.</p>
+        <ul>
+          <li><strong>City demand:</strong> estimated from annual electricity delivered by local utilities, divided by 8,760 hours in a year. Red Deer ≈ 90 MW, Calgary ≈ 1.1 GW and Toronto ≈ 2.9 GW on average. Peaks are higher.</li>
+          <li><strong>Greater Tokyo:</strong> the Tokyo power company's service area (Kanto region, about 45 million people) uses roughly 260 TWh a year, ≈ 30 GW on average, with summer peaks around 55 GW. The 37 million figure is the metro population.</li>
+          <li><strong>Daily curve:</strong> an illustrative winter weekday shape (low overnight, evening peak), not measured data for any specific day.</li>
+          <li><strong>Average home:</strong> ≈ 1 kW (about 8,800 kWh a year). Alberta homes use somewhat less and homes with electric heat use more.</li>
+          <li><strong>AI chips:</strong> "power per chip" includes the chip's share of its server (memory, networking, CPUs). An H100-class chip is ≈ 1.3 kW all-in and a Blackwell-class chip is ≈ 1.9 kW.</li>
+          <li><strong>Wind turbine:</strong> 3.5 MW maximum at a ~35% capacity factor, so ≈ 1.2 MW average. <strong>Nuclear reactor:</strong> ≈ 1 GW.</li>
+          <li><strong>Data centre water:</strong> evaporative cooling ≈ 1.8 L per kWh of computer energy (operators report about 1.1–2.5). Hybrid or outside-air cooling ≈ 0.4 L (an industry target for new sites). Closed-loop or dry cooling ≈ 0.05 L, but it costs more electricity.</li>
+          <li><strong>Power-plant water:</strong> ≈ 4.5 L consumed per kWh, a recent US-grid average. It varies hugely: wind and solar use almost none, and thermal and hydro plants use much more.</li>
+          <li><strong>Water yardsticks:</strong> an Olympic pool ≈ 2.5 million L. Canadians use ≈ 223 L per person per day at home (Statistics Canada, 2021). Calgary uses ≈ 600 million L a day.</li>
+          <li><strong>Per AI question:</strong> Google reports 0.26 mL of water and 0.24 Wh for a median Gemini text prompt (2025, on-site water only).</li>
+          <li><strong>Grid totals:</strong> Alberta's record peak is ≈ 12 GW. Canada averages ≈ 65 GW, the US ≈ 470 GW and the world ≈ 3.4 TW of electricity.</li>
+        </ul>
+      </details>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Made to help people make sense of power. Numbers are rounded estimates for learning.</p>
+    <p>The code is open: <a href="https://github.com/hriday/power">github.com/hriday/power</a>.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
